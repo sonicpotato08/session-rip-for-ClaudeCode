@@ -3,7 +3,6 @@
 
 set -u
 
-# stdin から JSON を受け取り session_id を抽出 (jq非依存)
 INPUT=$(cat 2>/dev/null || true)
 SESSION_ID=$(printf '%s' "$INPUT" \
   | sed -n 's/.*"session_id"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' \
@@ -12,7 +11,16 @@ SESSION_ID=$(printf '%s' "$INPUT" \
 SHORT_ID="${SESSION_ID:0:8}"
 [[ -z "$SHORT_ID" ]] && SHORT_ID="????????"
 
-TIMESTAMP=$(date '+%Y-%m-%d %H:%M')
+DIED=$(date '+%m-%d %H:%M')
+
+# 開始時刻を読み込み (SessionStart で書かれたもの)
+STATE_DIR="${TMPDIR:-/tmp}"
+STATE_FILE="${STATE_DIR%/}/claude-rip-${SESSION_ID}.start"
+BORN="??-?? ??:??"
+if [[ -n "$SESSION_ID" && -r "$STATE_FILE" ]]; then
+  BORN=$(head -1 "$STATE_FILE" 2>/dev/null || echo "??-?? ??:??")
+  rm -f "$STATE_FILE"
+fi
 
 # 出力先: /dev/tty が開ければそこへ、なければ stderr へ
 if (: > /dev/tty) 2>/dev/null; then
@@ -32,7 +40,8 @@ cat > "$OUT" <<EOF
        |                   |
        |     ${SHORT_ID}      |
        |                   |
-       |  ${TIMESTAMP} |
+       | Born: ${BORN} |
+       | Died: ${DIED} |
        |                   |
        |   ░░░░░░░░░░░░░   |
        |                   |
