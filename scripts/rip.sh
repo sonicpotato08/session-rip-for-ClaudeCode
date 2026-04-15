@@ -7,6 +7,14 @@ INPUT=$(cat 2>/dev/null || true)
 SESSION_ID=$(printf '%s' "$INPUT" \
   | sed -n 's/.*"session_id"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' \
   | head -1)
+REASON=$(printf '%s' "$INPUT" \
+  | sed -n 's/.*"reason"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' \
+  | head -1)
+
+# /clear は TUI 即時再描画とレースして表示が崩れるのでスキップ
+if [[ "$REASON" == "clear" ]]; then
+  exit 0
+fi
 
 SHORT_ID="${SESSION_ID:0:8}"
 [[ -z "$SHORT_ID" ]] && SHORT_ID="????????"
