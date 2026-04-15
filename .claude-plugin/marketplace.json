@@ -7,7 +7,10 @@
   "plugins": [
     {
       "name": "claude-rip",
-      "source": ".",
+      "source": {
+        "source": "github",
+        "repo": "sonicpotato08/session-rip-for-ClaudeCode"
+      },
       "description": "Display a tombstone ASCII art when a Claude Code session ends"
     }
   ]
