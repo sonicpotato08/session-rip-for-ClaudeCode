@@ -1,0 +1,8 @@
+{
+  "name": "claude-rip",
+  "version": "0.1.0",
+  "description": "Display a tombstone ASCII art when a Claude Code session ends",
+  "author": {
+    "name": "Carbon"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "name": "carbon-claude-plugins",
+  "owner": {
+    "name": "Carbon",
+    "url": "https://github.com/sonicpotato08"
+  },
+  "plugins": [
+    {
+      "name": "claude-rip",
+      "source": ".",
+      "description": "Display a tombstone ASCII art when a Claude Code session ends"
+    }
+  ]
+}
